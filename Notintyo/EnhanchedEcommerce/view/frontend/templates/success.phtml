@@ -8,7 +8,6 @@ if ($block->isEnhanchedEcommerceEnabled()) : ?>
 
             ga('ecommerce:addTransaction', {
                 'id': '<?php echo $block->getOrderId(); ?>', // Transaction ID. Required.
-                'affiliation': '<?php echo $block->getStoreName(); ?>', // Affiliation or store name.
                 'revenue': '<?php echo number_format($block->getOrderDetails()->getSubtotal(), 2); ?>',  // Grand Total.
                 'shipping': '<?php echo number_format($block->getOrderDetails()->getShippingAmount(), 2); ?>' // Shipping.
                 'tax': '<?php echo number_format($block->getOrderDetails()->getTaxAmount(), 2); ?>', // Tax.
