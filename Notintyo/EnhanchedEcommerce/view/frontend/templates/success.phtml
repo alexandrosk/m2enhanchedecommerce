@@ -1,0 +1,30 @@
+<?php
+
+if ($block->isEnhanchedEcommerceEnabled()) : ?>
+<script>
+    require([ 'jquery', 'jquery/ui'], function($){
+        $(document).ready(function() {
+            ga('require', 'ecommerce');
+
+            ga('ecommerce:addTransaction', {
+                'id': '<?php echo $block->getOrderId(); ?>', // Transaction ID. Required.
+                'affiliation': '<?php echo $block->getStoreName(); ?>', // Affiliation or store name.
+                'revenue': '<?php echo number_format($block->getOrderDetails()->getSubtotal(), 2); ?>',  // Grand Total.
+                'shipping': '<?php echo number_format($block->getOrderDetails()->getShippingAmount(), 2); ?>' // Shipping.
+                'tax': '<?php echo number_format($block->getOrderDetails()->getTaxAmount(), 2); ?>', // Tax.
+            }); 
+            
+            <?php foreach ($block->getOrderDetails()->getAllVisibleItems() as $item) : ?>
+                ga('ecommerce:addItem', {
+                    'id': '<?php echo $item->getSku(); ?>', // Transaction ID. Required.
+                    'name': '<?php echo $item->getName(); ?>',    // Product name. Required.
+                    'price': '<?php echo number_format($item->getPrice(), 2); ?>',  // Unit price.
+                    'quantity': '<?php echo $item->getQtyOrdered(); ?>' // Quantity.
+                });
+            <?php endforeach; ?>
+           ga('ecommerce:send');
+
+        });
+    });
+</script>
+<?php endif; ?>
